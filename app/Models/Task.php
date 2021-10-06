@@ -35,5 +35,10 @@ class Task
         return [$task->id(),$task->title(),$task->createdAt()];
     }
 
+    public function setId(?string $id = null): void
+    {
+        $this->id = $id ?? rand(1,100);
+    }
+
 
 }

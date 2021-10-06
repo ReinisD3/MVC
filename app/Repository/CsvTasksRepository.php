@@ -40,6 +40,7 @@ class CsvTasksRepository implements TasksInterface
     {
         $writer = Writer::createFromPath($this->filename, 'a+');
         $writer->setDelimiter(';');
+        $task->setId();
         $writer->insertOne($task->toArray($task));
     }
 

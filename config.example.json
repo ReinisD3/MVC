@@ -1,0 +1,7 @@
+{
+  "csvPath" : "fileName",
+  "name" : "DatabaseName",
+  "username" : "user",
+  "password" : "",
+  "connection" : "ip"
+}

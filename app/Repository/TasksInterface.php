@@ -1,16 +1,16 @@
 <?php
 
-namespace app\Controllers\Repository;
+namespace app\Repository;
 
 use app\Models\Task;
 use app\Models\Collections\TaskCollection;
 
-interface DbInterface
+interface TasksInterface
 {
 
-    public function loadTasks():?TaskCollection;
+    public function allTasks():?TaskCollection;
 
-    public function add(Task $task): void;
+    public function addOneTask(Task $task): void;
 
     public function searchById(string $id): ?Task;
 

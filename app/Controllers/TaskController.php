@@ -2,28 +2,32 @@
 
 namespace app\Controllers;
 
-use App\Controllers\Repository\CsvDb;
+use App\Controllers\RepositoryController;
 use App\Models\Task;
 
-class TaskController
+
+class TaskController extends RepositoryController
 {
 
     public function show(): void
     {
+        $taskCollection = $this->repository->allTasks();
 
-        $taskCollection = (new CsvDb('Db/db.csv'))->loadTasks();
 
+        require_once 'app/Views/Tasks/index.html';
 
-        require_once 'app/Views/tasks.html';
 
     }
 
     public function add(): void
     {
-        $addTask = new Task((int)$_POST['id'], $_POST['description']);
-        (new CsvDb('Db/db.csv'))->add($addTask);
 
-        self:$this->show();
+        //validate POST
+
+        $addTask = new Task($_POST['title']);
+        $this->repository->addOneTask($addTask);
+
+        header('Location:/tasks');
 
 
     }
@@ -32,16 +36,16 @@ class TaskController
     {
 
         $id = $_GET['searchId'];
-        $searchedTask = (new CsvDb('Db/db.csv'))->searchById($id);
+        $searchedTask = $this->repository->searchById($id);
 
-        require_once 'app/Views/searchedTask.html';
+        require_once 'app/Views/Tasks/searched.html';
 
     }
     public function delete():void
     {
         $taskId = $_POST['id'];
-        $searchedTask = (new CsvDb('Db/db.csv'))->searchById($taskId);
-        (new CsvDb('Db/db.csv'))->delete($searchedTask);
+        $searchedTask = $this->repository->searchById($taskId);
+        $this->repository->delete($searchedTask);
 
         header('Location:/tasks');
 

@@ -1,4 +1,4 @@
-<?php require('Public/head.html'); ?>
+<?php require('app/Views/Public/head.html'); ?>
 
 <body>
 
@@ -7,13 +7,15 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Description</th>
+            <th scope="col">Title</th>
+            <th scope="col">Created at</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td><?= $searchedTask->id() ?></td>
-            <td><?= $searchedTask->description() ?></td>
+            <td><?= $searchedTask->title() ?></td>
+            <td><?= $searchedTask->createdAt() ?></td>
         </tr>
 
         </tbody>

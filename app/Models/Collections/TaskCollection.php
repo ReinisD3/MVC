@@ -6,7 +6,7 @@ use app\Models\Task;
 
 class TaskCollection
 {
-    private array $taskCollection;
+    private array $taskCollection = [];
 
     public function __construct(array $tasks = [])
     {

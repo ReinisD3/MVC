@@ -1,4 +1,4 @@
-<?php require('Public/head.html'); ?>
+<?php require('app/Views/Public/head.html'); ?>
 
 <body>
 <div class="container">
@@ -10,7 +10,8 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Description</th>
+            <th scope="col">Title</th>
+            <th scope="col">Time created at</th>
         </tr>
         </thead>
 
@@ -18,7 +19,8 @@
         <?php foreach ($taskCollection->taskCollection() as $task) : ?>
         <tr>
             <td><?= $task->id() ?></td>
-            <td><?= $task->description() ?></td>
+            <td><?= $task->title() ?></td>
+            <td><?= $task->createdAt() ?></td>
         </tr>
         <?php endforeach ?>
         </tbody>
@@ -27,10 +29,9 @@
     <br><br>
 
     <form method="post">
-        <label for="id" class="form-label">ID</label>
-        <input type="number" name="id" class="form-control" id="id" placeholder="number">
-        <label for="description" class="form-label">Task description : </label>
-        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+
+        <label for="title" class="form-label">Task title : </label>
+        <input type="text" class="form-control" name="title" id="title">
         <input type="submit" value="Add Task" name="submit" class="btn btn-dark"/>
     </form>
     <form method="get" action="tasks/searched">

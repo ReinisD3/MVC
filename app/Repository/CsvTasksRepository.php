@@ -1,24 +1,24 @@
 <?php
 
-namespace app\Controllers\Repository;
+namespace app\Repository;
 
-use App\Controllers\Repository\DbInterface;
+use App\Repository\TasksInterface;
 use App\Models\Collections\TaskCollection;
 use App\Models\Task;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use League\Csv\Writer;
 
-class CsvDb implements DbInterface
+class CsvTasksRepository implements TasksInterface
 {
     private string $filename;
 
-    public function __construct(string $filename)
+    public function __construct()
     {
-        $this->filename = $filename;
+        $this->filename = json_decode(file_get_contents('config.json'),true)['csvPath'];
     }
 
-    public function loadTasks(): TaskCollection
+    public function allTasks(): TaskCollection
     {
         $reader = Reader::createFromPath($this->filename, 'r');
         $reader->setDelimiter(';');
@@ -27,12 +27,16 @@ class CsvDb implements DbInterface
 
         $taskCollection = new TaskCollection();
         foreach ($tasks as $task) {
-            $taskCollection->add(new Task($task[0], $task[1]));
+            $taskCollection->add(new Task(
+                $task[1],
+                $task[2],
+                $task[0]
+            ));
         }
         return $taskCollection;
     }
 
-    public function add(Task $task): void
+    public function addOneTask(Task $task): void
     {
         $writer = Writer::createFromPath($this->filename, 'a+');
         $writer->setDelimiter(';');
@@ -53,8 +57,9 @@ class CsvDb implements DbInterface
         $task = $stmt->process($reader)->fetchOne();
 
         return empty($task) ? null : new Task(
-            $task[0],
-            $task[1]
+            $task[1],
+            $task[2],
+            $task[0]
         );
 
     }

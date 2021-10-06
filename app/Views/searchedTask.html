@@ -1,0 +1,31 @@
+<?php require('Public/head.html'); ?>
+
+<body>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><?= $searchedTask->id() ?></td>
+            <td><?= $searchedTask->description() ?></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+    <br><br>
+    <form method="post" action="delete">
+        <input type="hidden" name="id" class="form-control" id="id" value="<?= $searchedTask->id() ?>">
+        <input type="submit" value="delete" name="delete" class="btn btn-dark"/>
+    </form>
+
+</div>
+</body>
+</html>

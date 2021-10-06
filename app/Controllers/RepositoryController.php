@@ -12,6 +12,6 @@ abstract class RepositoryController
 
     public function __construct()
     {
-        $this->repository = new CsvTasksRepository();
+        $this->repository = new SQLRepository();
     }
 }

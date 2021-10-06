@@ -43,6 +43,7 @@ class TaskController extends RepositoryController
     }
     public function delete():void
     {
+        var_dump($_POST);
         $taskId = $_POST['id'];
         $searchedTask = $this->repository->searchById($taskId);
         $this->repository->delete($searchedTask);

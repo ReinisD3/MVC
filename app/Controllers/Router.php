@@ -12,6 +12,7 @@ class Router
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r)
         {
+            $r->addRoute('GET', '/', 'TaskController@show');
             $r->addRoute('GET', '/tasks', 'TaskController@show');
             $r->addRoute('POST', '/tasks', 'TaskController@add');
             $r->addRoute('GET', '/tasks/searched', 'TaskController@searched');

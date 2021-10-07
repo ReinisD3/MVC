@@ -1,13 +1,13 @@
 <?php
 
-namespace app\Repository;
+namespace app\Repositories;
 
-use App\Repository\TasksRepositoryInterface;
+use App\Repositories\TasksRepositoryInterface;
 use App\Models\Collections\TaskCollection;
 use App\Models\Task;
 use PDO;
 
-class SQLTaskRepository implements TasksRepositoryInterface
+class SQLTasksRepository implements TasksRepositoryInterface
 {
     private array $config;
     private PDO $pdo;
@@ -25,7 +25,7 @@ class SQLTaskRepository implements TasksRepositoryInterface
 
     }
 
-    public function allTasks(): ?TaskCollection
+    public function getRecords(): ?TaskCollection
     {
         $statement = $this->pdo->prepare("select * from tasks");
 
@@ -66,7 +66,7 @@ class SQLTaskRepository implements TasksRepositoryInterface
             $searchedTask[0]->title,
             $searchedTask[0]->createdAt,
             $searchedTask[0]->id
-        );        ;
+        );
 
     }
 

@@ -3,24 +3,24 @@
 namespace app\Controllers;
 
 use App\Models\Task;
-use App\Repository\CsvTasksRepository;
-use App\Repository\SQLTaskRepository;
-use app\Repository\TasksInterface;
+use App\Repositories\CsvTasksRepository;
+use App\Repositories\SQLTasksRepository;
+use app\Repositories\TasksRepositoryInterface;
 
 
 
-class TaskController
+class TasksController
 {
-    private TasksInterface $repository;
+    private TasksRepositoryInterface $repository;
 
     public function __construct()
     {
-        $this->repository = new SQLTaskRepository();
+        $this->repository = new SQLTasksRepository();
     }
 
     public function show(): void
     {
-        $taskCollection = $this->repository->allTasks();
+        $taskCollection = $this->repository->getRecords();
 
 
         require_once 'app/Views/Tasks/index.html';
@@ -42,7 +42,7 @@ class TaskController
 
     public function save(Task $task):void
     {
-        $this->repository->addOneTask($task);
+        $this->repository->addOne($task);
 
     }
 
@@ -61,7 +61,7 @@ class TaskController
     {
         $taskId = $_POST['id'];
         $searchedTask = $this->repository->searchById($taskId);
-        $this->repository->delete($searchedTask);
+        $this->repository->deleteOne($searchedTask);
 
         header('Location:/tasks');
 

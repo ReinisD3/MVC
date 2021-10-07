@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Repository;
+namespace app\Repositories;
 
 use App\Repository\TasksRepositoryInterface;
 use App\Models\Collections\TaskCollection;
@@ -18,7 +18,7 @@ class CsvTasksRepository implements TasksRepositoryInterface
         $this->filename = json_decode(file_get_contents('config.json'),true)['csvPath'];
     }
 
-    public function allTasks(): TaskCollection
+    public function getRecords(): TaskCollection
     {
         $reader = Reader::createFromPath($this->filename, 'r');
         $reader->setDelimiter(';');

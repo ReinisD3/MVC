@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Repository;
+namespace app\Repositories;
 
 use app\Models\Task;
 use app\Models\Collections\TaskCollection;
@@ -8,7 +8,7 @@ use app\Models\Collections\TaskCollection;
 interface TasksRepositoryInterface
 {
 
-    public function allTasks():?TaskCollection;
+    public function getRecords():?TaskCollection;
 
     public function addOne(Task $task): void;
 

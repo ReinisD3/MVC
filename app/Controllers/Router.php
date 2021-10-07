@@ -14,8 +14,8 @@ class Router
             $r->addRoute('GET', '/', 'TasksController@show');
             $r->addRoute('GET', '/tasks', 'TasksController@show');
             $r->addRoute('POST', '/tasks', 'TasksController@add');
-            $r->addRoute('GET', '/tasks/searched', 'TasksController@searched');
-            $r->addRoute('POST', '/tasks/searched/delete', 'TasksController@delete');
+            $r->addRoute('GET', '/tasks/search', 'TasksController@search');
+            $r->addRoute('POST', '/tasks/search/delete', 'TasksController@delete');
 
         });
 

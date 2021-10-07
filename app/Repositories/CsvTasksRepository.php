@@ -2,14 +2,14 @@
 
 namespace app\Repository;
 
-use App\Repository\TasksInterface;
+use App\Repository\TasksRepositoryInterface;
 use App\Models\Collections\TaskCollection;
 use App\Models\Task;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use League\Csv\Writer;
 
-class CsvTasksRepository implements TasksInterface
+class CsvTasksRepository implements TasksRepositoryInterface
 {
     private string $filename;
 
@@ -36,7 +36,7 @@ class CsvTasksRepository implements TasksInterface
         return $taskCollection;
     }
 
-    public function addOneTask(Task $task): void
+    public function addOne(Task $task): void
     {
         $writer = Writer::createFromPath($this->filename, 'a+');
         $writer->setDelimiter(';');
@@ -64,7 +64,7 @@ class CsvTasksRepository implements TasksInterface
         );
 
     }
-    public function delete(Task $task): void
+    public function deleteOne(Task $task): void
     {
         $reader = Reader::createFromPath($this->filename, 'r');
         $reader->setDelimiter(';');

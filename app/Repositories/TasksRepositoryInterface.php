@@ -5,15 +5,15 @@ namespace app\Repository;
 use app\Models\Task;
 use app\Models\Collections\TaskCollection;
 
-interface TasksInterface
+interface TasksRepositoryInterface
 {
 
     public function allTasks():?TaskCollection;
 
-    public function addOneTask(Task $task): void;
+    public function addOne(Task $task): void;
 
     public function searchById(string $id): ?Task;
 
-    public function delete(Task $task): void;
+    public function deleteOne(Task $task): void;
 
 }

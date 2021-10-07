@@ -2,12 +2,21 @@
 
 namespace app\Controllers;
 
-use App\Controllers\RepositoryController;
 use App\Models\Task;
+use App\Repository\CsvTasksRepository;
+use App\Repository\SQLTaskRepository;
+use app\Repository\TasksInterface;
 
 
-class TaskController extends RepositoryController
+
+class TaskController
 {
+    private TasksInterface $repository;
+
+    public function __construct()
+    {
+        $this->repository = new SQLTaskRepository();
+    }
 
     public function show(): void
     {
@@ -37,13 +46,13 @@ class TaskController extends RepositoryController
 
     }
 
-    public function searched(): void
+    public function search(): void
     {
 
         $id = $_GET['searchId'];
         $searchedTask = $this->repository->searchById($id);
 
-        require_once 'app/Views/Tasks/searched.html';
+        require_once 'app/Views/Tasks/search.html';
 
 
 
@@ -55,7 +64,6 @@ class TaskController extends RepositoryController
         $this->repository->delete($searchedTask);
 
         header('Location:/tasks');
-
 
 
     }

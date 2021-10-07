@@ -2,12 +2,12 @@
 
 namespace app\Repository;
 
-use App\Repository\TasksInterface;
+use App\Repository\TasksRepositoryInterface;
 use App\Models\Collections\TaskCollection;
 use App\Models\Task;
 use PDO;
 
-class SQLRepository implements TasksInterface
+class SQLTaskRepository implements TasksRepositoryInterface
 {
     private array $config;
     private PDO $pdo;
@@ -43,7 +43,7 @@ class SQLRepository implements TasksInterface
         return $taskCollection;
     }
 
-    public function addOneTask(Task $task): void
+    public function addOne(Task $task): void
     {
         /** @var Task $task */
         $sql = "INSERT INTO tasks (title, createdAt) 
@@ -70,7 +70,7 @@ class SQLRepository implements TasksInterface
 
     }
 
-    public function delete(Task $task): void
+    public function deleteOne(Task $task): void
     {
         $sql = "DELETE FROM tasks WHERE id={$task->id()}";
 

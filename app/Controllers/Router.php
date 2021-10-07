@@ -2,7 +2,6 @@
 
 namespace app\Controllers;
 
-//require_once 'vendor/autoload.php';
 use FastRoute;
 
 class Router
@@ -12,11 +11,11 @@ class Router
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r)
         {
-            $r->addRoute('GET', '/', 'TaskController@show');
-            $r->addRoute('GET', '/tasks', 'TaskController@show');
-            $r->addRoute('POST', '/tasks', 'TaskController@add');
-            $r->addRoute('GET', '/tasks/searched', 'TaskController@searched');
-            $r->addRoute('POST', '/tasks/searched/delete', 'TaskController@delete');
+            $r->addRoute('GET', '/', 'TasksController@show');
+            $r->addRoute('GET', '/tasks', 'TasksController@show');
+            $r->addRoute('POST', '/tasks', 'TasksController@add');
+            $r->addRoute('GET', '/tasks/searched', 'TasksController@searched');
+            $r->addRoute('POST', '/tasks/searched/delete', 'TasksController@delete');
 
         });
 

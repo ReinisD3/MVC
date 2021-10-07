@@ -21,14 +21,19 @@ class TaskController extends RepositoryController
 
     public function add(): void
     {
-
         //validate POST
 
         $addTask = new Task($_POST['title']);
-        $this->repository->addOneTask($addTask);
+        $this->save($addTask);
 
         header('Location:/tasks');
 
+
+    }
+
+    public function save(Task $task):void
+    {
+        $this->repository->addOneTask($task);
 
     }
 
@@ -40,10 +45,11 @@ class TaskController extends RepositoryController
 
         require_once 'app/Views/Tasks/searched.html';
 
+
+
     }
     public function delete():void
     {
-        var_dump($_POST);
         $taskId = $_POST['id'];
         $searchedTask = $this->repository->searchById($taskId);
         $this->repository->delete($searchedTask);

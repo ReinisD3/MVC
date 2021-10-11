@@ -4,7 +4,7 @@ namespace app\Controllers;
 
 use App\Models\Task;
 use App\Repositories\CsvTasksRepository;
-use App\Repositories\SQLTasksRepository;
+use App\Repositories\MysqlTasksRepository;
 use app\Repositories\TasksRepositoryInterface;
 
 
@@ -15,10 +15,10 @@ class TasksController
 
     public function __construct()
     {
-        $this->repository = new SQLTasksRepository();
+        $this->repository = new MysqlTasksRepository();
     }
 
-    public function show(): void
+    public function index(): void
     {
         $taskCollection = $this->repository->getRecords();
 

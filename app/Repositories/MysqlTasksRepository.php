@@ -7,7 +7,7 @@ use App\Models\Collections\TaskCollection;
 use App\Models\Task;
 use PDO;
 
-class SQLTasksRepository implements TasksRepositoryInterface
+class MysqlTasksRepository implements TasksRepositoryInterface
 {
     private array $config;
     private PDO $pdo;

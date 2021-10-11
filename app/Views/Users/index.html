@@ -1,0 +1,11 @@
+<?php require('app/Views/Public/head.html'); ?>
+
+<body>
+<?php foreach($usersCollection->users() as $user) : ?>
+
+<?= $user->name() ?><br>
+
+<?php endforeach ?>
+
+</body>
+</html>

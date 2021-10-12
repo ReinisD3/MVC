@@ -14,18 +14,16 @@ class MysqlTasksRepository implements TasksRepositoryInterface
     public function __construct()
     {
         $this->config = json_decode(file_get_contents('config.json'),true);
-        try {
+
         $this->pdo = new PDO($this->config['connection'].';dbname='.$this->config['name'],
                 $this->config['username'],
                 $this->config['password']);
-        } catch (\PDOException $e) {
-            die($e->getMessage());
-        }
+
 
 
     }
 
-    public function getRecords(): ?TaskCollection
+    public function getRecords(): TaskCollection
     {
         $statement = $this->pdo->prepare("select * from tasks");
 

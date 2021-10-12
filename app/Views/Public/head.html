@@ -5,26 +5,28 @@
     <title>Tasks</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <?php use App\GetUserById; ?>
+    <div class="container">
+        <div class="float-right">
+            <?php if($_SESSION["loggedIn"] === true) { ?>
 
-    <div class="float-right">
-        <?php if($_SESSION["loggedIn"] === true) { ?>
+            <h5 class="text-success"><?= (GetUserById::find($_SESSION['id']))->name(); ?></h5>
 
-        <h5 class="text-success"><?= 'user : '.$_SESSION["userName"]; ?></h5>
+            <a class='btn btn-dark float-right' href='/users/logout' role='button'>Logout</a>
+            <?php } else { ?>
 
-        <a class='btn btn-dark float-right' href='/users/logout' role='button'>Logout</a>
-        <?php } else { ?>
+            <h5 class="text-danger"><?= 'not logged in'; ?></h5>
 
-        <h5 class="text-danger"><?= 'user : not logged'; ?></h5>
+            <a class='btn btn-dark float-right' href='/users/login' role='button'>Login</a>
+            <?php } ?>
+        </div>
 
-        <a class='btn btn-dark float-right' href='/users/login' role='button'>Login</a>
-        <?php } ?>
-    </div>
+        <nav class="nav">
+            <a class="nav-link active" href="/">Home</a>
+            <a class="nav-link active" href="/tasks">Tasks</a>
 
-    <nav class="nav">
-        <a class="nav-link active" href="/">Home</a>
-        <a class="nav-link active" href="/tasks">Tasks</a>
+        </nav>
 
-    </nav>
 
 
 </head>

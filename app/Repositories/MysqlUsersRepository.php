@@ -58,11 +58,25 @@ class MysqlUsersRepository implements UsersRepositoryInterface
             $userFound[0]->id
         );
     }
-    public function add(User $newUser):void
+    public function add(User $user):void
     {
-        $sql = "INSERT INTO users (name,email,password) VALUES ('{$newUser->name()}', '{$newUser->email()}','{$newUser->password()}')";
+        $sql = "INSERT INTO users (name,email,password) VALUES ('{$user->name()}', '{$user->email()}','{$user->password()}')";
         $this->pdo->exec($sql);
 
+    }
+    public function getById(string $id): ?User
+    {
+        $sql = "SELECT * FROM users WHERE id = '$id'";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        $userFound = $statement->fetchAll(PDO::FETCH_CLASS);
+        if(empty($userFound)) return null;
+        return new User(
+            $userFound[0]->name,
+            $userFound[0]->email,
+            $userFound[0]->password,
+            $userFound[0]->id
+        );
     }
 
 }

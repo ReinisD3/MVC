@@ -12,12 +12,12 @@ class Router
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r)
         {
             $r->addRoute('GET', '/', 'IndexController@index');
+
             $r->addRoute('GET', '/users/login', 'UsersController@login');
             $r->addRoute('GET', '/users/logout', 'UsersController@logout');
             $r->addRoute('GET', '/users/login/validate', 'UsersController@validateLogin');
             $r->addRoute('GET', '/users/register', 'UsersController@registerTemplate');
             $r->addRoute('POST', '/users/register', 'UsersController@register');
-
 
             $r->addRoute('GET', '/tasks', 'TasksController@index');
             $r->addRoute('POST', '/tasks', 'TasksController@add');

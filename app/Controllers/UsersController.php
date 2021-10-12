@@ -2,9 +2,13 @@
 
 namespace app\Controllers;
 
+use App\Exceptions\FormValidationException;
 use App\Repositories\MysqlUsersRepository;
 use App\Repositories\UsersRepositoryInterface;
 use App\Models\User;
+use App\Validation\RegisterValidation;
+use App\InputProcesses\TestInput;
+use App\GetUserById;
 
 class UsersController
 {
@@ -27,13 +31,7 @@ class UsersController
     {
         require_once 'app/Views/Users/login.html';
 
-//
-//        function test_input($data) {
-//            $data = trim($data);
-//            $data = stripslashes($data);
-//            $data = htmlspecialchars($data);
-//            return $data;
-//        }
+
     }
     public function logout():void
     {
@@ -44,12 +42,12 @@ class UsersController
 
     public function validateLogin(): void
     {
-        $email = trim($_GET['email']);
-        $password = trim($_GET['password']);
+        $email = TestInput::test_input($_GET['email']);
+        $password = TestInput::test_input($_GET['password']);
         $loggedUser = $this->repository->validateLogin($email, $password);
         if (!empty($loggedUser)) {
             $_SESSION["loggedIn"] = true;
-            $_SESSION["userName"] = $loggedUser->name();
+            $_SESSION["id"] = $loggedUser->id();
         } else {
             echo "<script type='text/javascript'>alert('User not found! Try Again or make new User account.');</script>";
             $_SESSION["loggedIn"] = false;
@@ -65,13 +63,27 @@ class UsersController
 
     public function register(): void
     {
-        $newUser = new User(
-            trim($_POST['name']),
-            trim($_POST['email']),
-            trim($_POST['password'])
-        );
-        $this->repository->add($newUser);
+        try {
+          $register = new RegisterValidation();
+          $register->validate($_POST);
 
-        header('Location:/');
+            $this->repository->add(new User(
+                TestInput::test_input($_POST['name']),
+                TestInput::test_input($_POST['email']),
+                TestInput::test_input($_POST['password'])
+            ));
+
+            header('Location:/');
+        }
+        catch (FormValidationException $e)
+        {
+
+            $_SESSION['_errors'] = $register->getErrors();
+            header('Location:/users/register');
+
+        }
+
+
+
     }
 }

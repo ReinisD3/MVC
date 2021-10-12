@@ -31,15 +31,17 @@
     <form method="post">
 
         <label for="title" class="form-label">Task title : </label>
-        <input type="text" class="form-control" name="title" id="title">
+        <input type="text" class="form-control" name="title" id="title"
+               placeholder="<?php if(isset($_SESSION['_errors']['taskTitle'])) echo $_SESSION['_errors'][taskTitle]; ?>">
         <input type="submit" value="Add Task" name="submit" class="btn btn-dark"/>
     </form>
     <form method="get" action="tasks/search">
         <label for="searchId" class="form-label">Search by Id</label>
-        <input type="number" name="searchId" class="form-control" id="searchId" placeholder="enter Id">
+        <input type="number" name="searchId" class="form-control" id="searchId"
+               placeholder="<?= isset($_SESSION['_errors']['searchError']) ? $_SESSION['_errors']['searchError'] : 'Enter ID' ;?>">
         <input type="submit" value="search" name="search" class="btn btn-dark"/>
     </form>
-</div>
+</div><br><br><br><br><br><br>
 
 
 <?php require('app/Views/Public/footer.html'); ?>

@@ -1,0 +1,19 @@
+<?php require('app/Views/Public/head.html'); ?>
+
+<body>
+<div class="container">
+    <form method="post" action="register">
+        <label for="name" class="form-label"> Name : </label>
+        <input type="text" class="form-control" name="name" id="name"
+               placeholder="<?php if( isset($_SESSION['_errors']['registerName'])) echo $_SESSION['_errors']['registerName'] ?>">
+        <label for="email" class="form-label"> E-mail : </label>
+        <input type="text" class="form-control" name="email" id="email"
+               placeholder="<?php if( isset($_SESSION['_errors']['registerEmail'])) echo $_SESSION['_errors']['registerEmail'] ?>">
+        <label for="password" class="form-label"> Password : </label>
+        <input type="password" class="form-control" name="password" id="password"
+               placeholder="<?php if( isset($_SESSION['_errors']['registerPassword'])) echo $_SESSION['_errors']['registerPassword'] ?>">
+        <input type="submit" value="Register" name="submit" class="btn btn-dark"/>
+    </form>
+</div>
+
+<?php require('app/Views/Public/footer.html'); ?>

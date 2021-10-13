@@ -7,9 +7,10 @@ use App\Controllers\Router;
 
 session_start();
 
+$router = new Router();
+$router->start();
 
-Router::start();
-
+unset($_SESSION['errors']);
 
 
 

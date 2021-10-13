@@ -1,0 +1,40 @@
+{% extends "base.twig" %}
+
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Created at</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.createdAt }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+
+        <br><br>
+        <form method="post" action="search/delete">
+            <input type="hidden" name="id" value="{{ task.id }}">
+            <input type="submit" value="delete" name="delete" class="btn btn-dark"/>
+        </form>
+
+    </div>
+{% endblock %}
+
+
+
+
+
+

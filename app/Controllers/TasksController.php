@@ -2,85 +2,80 @@
 
 namespace app\Controllers;
 
+
 use App\Exceptions\FormValidationException;
+use App\Input\Process;
+use App\Models\Redirect;
 use App\Models\Task;
+use App\Models\View;
 use App\Repositories\CsvTasksRepository;
 use App\Repositories\MysqlTasksRepository;
 use app\Repositories\TasksRepositoryInterface;
 use App\Validation\TasksValidation;
-use App\GetUserById;
 
 
-class TasksController
+class TasksController extends BaseController
 {
     private TasksRepositoryInterface $repository;
+    private TasksValidation $validator;
 
     public function __construct()
     {
         $this->repository = new MysqlTasksRepository();
+        $this->validator = new TasksValidation();
+
     }
 
-    public function index(): void
+    public function index(): View
     {
-        $taskCollection = $this->repository->getRecords();
+        $tasks = $this->repository->getRecords();
 
-
-        require_once 'app/Views/Tasks/index.html';
-
+        return new View('Tasks/index.twig', $tasks, 'tasks');
 
     }
 
-    public function add(): void
+    public function add(): Redirect
     {
         try {
-            $v = new TasksValidation();
-            $v->validate($_POST);
-            $addTask = new Task($_POST['title']);
-            $this->save($addTask);
+
+            $this->validator->validateAdd($_POST);
+            $taskToAdd = new Task(Process::input($_POST['title']));
+            $this->repository->addOne($taskToAdd);
 
         } catch (FormValidationException $e) {
 
-            $_SESSION['_errors'] = $v->getErrors();
+            $_SESSION['errors'] = $this->validator->getErrors();
 
         }
-        header('Location:/tasks');
-
-    }
-
-    public function save(Task $task):void
-    {
-        $this->repository->addOne($task);
-
+        return new Redirect('/tasks');
     }
 
     /**
      * @throws FormValidationException
      */
-    public function search(): void
+    public function search(): object
     {
-        $id = $_GET['searchId'];
+        $id = Process::input($_GET['searchId']);
         $searchedTask = $this->repository->searchById($id);
-        try{
-           if(empty($searchedTask)) throw new FormValidationException();
-            require_once 'app/Views/Tasks/search.html';
+        try {
+            $this->validator->validateSearch($searchedTask);
+            return new View('Tasks/search.twig', $searchedTask, 'task');
 
-        }catch (FormValidationException $e){
-            $_SESSION['_errors']['searchError'] = "No tasks for id : $id found";
-            header('Location:/tasks');
+        } catch (FormValidationException $e) {
+
+            $_SESSION['errors'] = $this->validator->getErrors();
+            return new Redirect('/tasks');
         }
 
-
-
-
-
     }
-    public function delete():void
+
+    public function delete(): Redirect
     {
         $taskId = $_POST['id'];
         $searchedTask = $this->repository->searchById($taskId);
         $this->repository->deleteOne($searchedTask);
 
-        header('Location:/tasks');
+        return new Redirect('/tasks');
 
 
     }

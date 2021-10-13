@@ -6,7 +6,7 @@ use app\Models\Task;
 
 class TaskCollection
 {
-    private array $taskCollection = [];
+    private array $tasks = [];
 
     public function __construct(array $tasks = [])
     {
@@ -17,12 +17,12 @@ class TaskCollection
 
     public function add(Task $task): void
     {
-        $this->taskCollection[] = $task;
+        $this->tasks[] = $task;
     }
 
-    public function taskCollection(): array
+    public function getTasks(): array
     {
-        return $this->taskCollection;
+        return $this->tasks;
     }
 
 }

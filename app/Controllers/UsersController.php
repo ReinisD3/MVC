@@ -3,86 +3,77 @@
 namespace app\Controllers;
 
 use App\Exceptions\FormValidationException;
+use App\Models\Redirect;
+use App\Models\View;
 use App\Repositories\MysqlUsersRepository;
 use App\Repositories\UsersRepositoryInterface;
 use App\Models\User;
-use App\Validation\RegisterValidation;
-use App\InputProcesses\TestInput;
-use App\GetUserById;
+use App\Validation\UsersValidation;
+use App\Input\Process;
 
-class UsersController
+
+class UsersController extends BaseController
 {
     private UsersRepositoryInterface $repository;
+    private UsersValidation $validator;
 
     public function __construct()
     {
         $this->repository = new MysqlUsersRepository();
+        $this->validator = new UsersValidation();
     }
 
-    public function index(): void
+    public function index(): View
     {
-        $usersCollection = $this->repository->getRecords();
-
-        require_once 'app/Views/Users/index.html';
-
-    }
-
-    public function login(): void
-    {
-        require_once 'app/Views/Users/login.html';
-
-
-    }
-    public function logout():void
-    {
-        $_SESSION["loggedIn"] = false;
-        header('Location:/');
+        return new View('Users/login.twig');
 
     }
 
-    public function validateLogin(): void
+    public function logout(): Redirect
     {
-        $email = TestInput::test_input($_GET['email']);
-        $password = TestInput::test_input($_GET['password']);
+        unset($_SESSION['id']);
+        unset($GLOBALS['userLogged']);
+        return new Redirect('/');
+
+    }
+
+    public function login(): Redirect
+    {
+        $email = Process::input($_GET['email']);
+        $password = Process::input($_GET['password']);
         $loggedUser = $this->repository->validateLogin($email, $password);
-        if (!empty($loggedUser)) {
-            $_SESSION["loggedIn"] = true;
-            $_SESSION["id"] = $loggedUser->id();
-        } else {
+        try {
+            $this->validator->validateLogin($loggedUser);
+            $_SESSION['id'] = $loggedUser->id();
+
+        } catch (FormValidationException $e) {
+
             echo "<script type='text/javascript'>alert('User not found! Try Again or make new User account.');</script>";
-            $_SESSION["loggedIn"] = false;
         }
-        require_once 'app/Views/index.html';
+        return new Redirect('/');
     }
 
 
-    public function registerTemplate(): void
+    public function register(): View
     {
-        require_once 'app/Views/Users/register.html';
+        return new View('Users\register.twig');
     }
 
-    public function register(): void
+    public function registerExecute(): Redirect
     {
         try {
-          $register = new RegisterValidation();
-          $register->validate($_POST);
-
+            $this->validator->validateRegister($_POST);
             $this->repository->add(new User(
-                TestInput::test_input($_POST['name']),
-                TestInput::test_input($_POST['email']),
-                TestInput::test_input($_POST['password'])
+                Process::input($_POST['name']),
+                Process::input($_POST['email']),
+                Process::input($_POST['password'])
             ));
-
-            header('Location:/');
+            echo "<script type='text/javascript'>alert('User registered');</script>";
+            return new Redirect('/users/index');
+        } catch (FormValidationException $e) {
+            $_SESSION['errors'] = $this->validator->getErrors();
+            return new Redirect('/users/register');
         }
-        catch (FormValidationException $e)
-        {
-
-            $_SESSION['_errors'] = $register->getErrors();
-            header('Location:/users/register');
-
-        }
-
 
 
     }

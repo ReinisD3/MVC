@@ -2,13 +2,20 @@
 
 namespace App\Validation;
 
+use App\Exceptions\Errors;
 use App\Exceptions\FormValidationException;
+use App\Models\Task;
 
 class TasksValidation
 {
-    private array $errors = [];
+    private Errors $errors;
 
-    public function getErrors():array
+    public function __construct()
+    {
+        $this->errors = new Errors();
+    }
+
+    public function getErrors(): Errors
     {
         return $this->errors;
     }
@@ -16,10 +23,24 @@ class TasksValidation
     /**
      * @throws FormValidationException
      */
-    public  function validate(array $data):void
+    public function validateAdd(array $data): void
     {
-        if($data['title'] == '') $this->errors['taskTitle'] = 'Add title name here';
+        if ($data['title'] == '') {
+            $this->errors->add('taskTitle', 'Add title name here');
+        }
 
-        if(count($this->errors) > 0) throw new FormValidationException();
+        if (count($this->errors->all()) > 0) {
+            throw new FormValidationException();
+        }
+    }
+
+    public function validateSearch(?Task $task): void
+    {
+        if (empty($task)) {
+            $this->errors->add('id', "No tasks for id found");
+        }
+        if (count($this->errors->all()) > 0) {
+            throw new FormValidationException();
+        }
     }
 }

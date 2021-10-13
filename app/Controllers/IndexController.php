@@ -2,10 +2,12 @@
 
 namespace App\Controllers;
 
-class IndexController
+use App\Models\View;
+
+class IndexController extends BaseController
 {
-    public function index():void
+    public function index(): View
     {
-        require_once 'app/Views/index.html';
+        return new View('index.twig');
     }
 }

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\InputProcesses;
+namespace App\Input;
 
-class TestInput
+class Process
 {
 
-    public static function test_input($data)
+    public static function input($data)
     {
-
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);

@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\View;
 
-class IndexController extends BaseController
+class IndexController
 {
     public function index(): View
     {

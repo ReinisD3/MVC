@@ -14,7 +14,7 @@ use app\Repositories\TasksRepositoryInterface;
 use App\Validation\TasksValidation;
 
 
-class TasksController extends BaseController
+class TasksController
 {
     private TasksRepositoryInterface $repository;
     private TasksValidation $validator;

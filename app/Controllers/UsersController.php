@@ -12,7 +12,7 @@ use App\Validation\UsersValidation;
 use App\Input\Process;
 
 
-class UsersController extends BaseController
+class UsersController
 {
     private UsersRepositoryInterface $repository;
     private UsersValidation $validator;

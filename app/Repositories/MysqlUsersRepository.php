@@ -49,8 +49,12 @@ class MysqlUsersRepository implements UsersRepositoryInterface
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         $userFound = $statement->fetchAll(PDO::FETCH_CLASS);
-        if(empty($userFound)) return null;
-        if(!password_verify($password, $userFound[0]->password)) return null;
+        if(empty($userFound)) {
+            return null;
+        }
+        if(!password_verify($password, $userFound[0]->password)){
+            return null;
+        }
         return new User(
             $userFound[0]->name,
             $userFound[0]->email,

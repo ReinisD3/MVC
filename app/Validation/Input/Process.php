@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Input;
+namespace App\Validation\Input;
 
 class Process
 {

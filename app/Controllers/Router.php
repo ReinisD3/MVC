@@ -4,7 +4,6 @@ namespace app\Controllers;
 
 use App\Models\Redirect;
 use App\Models\View;
-use app\Repositories\MysqlUsersRepository;
 use FastRoute;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -20,6 +19,7 @@ class Router extends BaseController
 
     public function __construct()
     {
+        parent::__construct();
         $loader = new FilesystemLoader('app/Views');
         $this->twig = new Environment($loader);
         $this->twig->addGlobal('session', $_SESSION);

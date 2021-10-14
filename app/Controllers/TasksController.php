@@ -4,7 +4,8 @@ namespace app\Controllers;
 
 
 use App\Exceptions\FormValidationException;
-use App\Input\Process;
+use App\Exceptions\RepositoryValidationException;
+use App\Validation\Input\Process;
 use App\Models\Redirect;
 use App\Models\Task;
 use App\Models\View;
@@ -39,8 +40,7 @@ class TasksController
         try {
 
             $this->validator->validateAdd($_POST);
-            $taskToAdd = new Task(Process::input($_POST['title']));
-            $this->repository->addOne($taskToAdd);
+            $this->repository->addOne(new Task(Process::input($_POST['title'])));
 
         } catch (FormValidationException $e) {
 
@@ -55,13 +55,12 @@ class TasksController
      */
     public function search(): object
     {
-        $id = Process::input($_GET['searchId']);
-        $searchedTask = $this->repository->searchById($id);
         try {
+            $searchedTask = $this->repository->searchById(Process::input($_GET['searchId']));
             $this->validator->validateSearch($searchedTask);
             return new View('Tasks/search.twig', $searchedTask, 'task');
 
-        } catch (FormValidationException $e) {
+        } catch (RepositoryValidationException $e) {
 
             $_SESSION['errors'] = $this->validator->getErrors();
             return new Redirect('/tasks');
@@ -71,8 +70,7 @@ class TasksController
 
     public function delete(): Redirect
     {
-        $taskId = $_POST['id'];
-        $searchedTask = $this->repository->searchById($taskId);
+        $searchedTask = $this->repository->searchById($_POST['id']);
         $this->repository->deleteOne($searchedTask);
 
         return new Redirect('/tasks');

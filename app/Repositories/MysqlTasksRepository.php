@@ -2,6 +2,7 @@
 
 namespace app\Repositories;
 
+
 use App\Repositories\TasksRepositoryInterface;
 use App\Models\Collections\TaskCollection;
 use App\Models\Task;
@@ -11,14 +12,14 @@ class MysqlTasksRepository implements TasksRepositoryInterface
 {
     private array $config;
     private PDO $pdo;
+
     public function __construct()
     {
-        $this->config = json_decode(file_get_contents('config.json'),true);
+        $this->config = json_decode(file_get_contents('config.json'), true);
 
-        $this->pdo = new PDO($this->config['connection'].';dbname='.$this->config['name'],
-                $this->config['username'],
-                $this->config['password']);
-
+        $this->pdo = new PDO($this->config['connection'] . ';dbname=' . $this->config['name'],
+            $this->config['username'],
+            $this->config['password']);
 
 
     }
@@ -59,7 +60,9 @@ class MysqlTasksRepository implements TasksRepositoryInterface
         $statement->execute();
         $searchedTask = $statement->fetchALl(PDO::FETCH_CLASS);
 
-        if(empty($searchedTask)) return null;
+        if (empty($searchedTask)) {
+            return null;
+        }
         return new Task(
             $searchedTask[0]->title,
             $searchedTask[0]->createdAt,

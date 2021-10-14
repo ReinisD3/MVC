@@ -4,6 +4,7 @@ namespace App\Validation;
 
 use App\Exceptions\Errors;
 use App\Exceptions\FormValidationException;
+use App\Exceptions\RepositoryValidationException;
 use Respect\Validation\Validator as v;
 use App\Models\User;
 
@@ -30,7 +31,7 @@ class UsersValidation
             );
         }
         if (count($this->errors->all()) > 0) {
-            throw new FormValidationException();
+            throw new RepositoryValidationException();
         }
     }
     /**

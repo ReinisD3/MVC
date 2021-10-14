@@ -3,13 +3,14 @@
 namespace app\Controllers;
 
 use App\Exceptions\FormValidationException;
+use App\Exceptions\RepositoryValidationException;
 use App\Models\Redirect;
 use App\Models\View;
 use App\Repositories\MysqlUsersRepository;
 use App\Repositories\UsersRepositoryInterface;
 use App\Models\User;
 use App\Validation\UsersValidation;
-use App\Input\Process;
+use App\Validation\Input\Process;
 
 
 class UsersController
@@ -39,14 +40,15 @@ class UsersController
 
     public function login(): Redirect
     {
-        $email = Process::input($_GET['email']);
-        $password = Process::input($_GET['password']);
-        $loggedUser = $this->repository->validateLogin($email, $password);
+        $loggedUser = $this->repository->validateLogin(
+            Process::input($_GET['email']),
+            Process::input($_GET['password']
+            ));
         try {
             $this->validator->validateLogin($loggedUser);
             $_SESSION['id'] = $loggedUser->id();
 
-        } catch (FormValidationException $e) {
+        } catch (RepositoryValidationException $e) {
 
             echo "<script type='text/javascript'>alert('User not found! Try Again or make new User account.');</script>";
         }
@@ -70,11 +72,12 @@ class UsersController
             ));
             echo "<script type='text/javascript'>alert('User registered');</script>";
             return new Redirect('/users/index');
-        } catch (FormValidationException $e) {
+        }
+        catch (FormValidationException $e)
+        {
             $_SESSION['errors'] = $this->validator->getErrors();
             return new Redirect('/users/register');
         }
-
 
     }
 }

@@ -4,6 +4,7 @@ namespace App\Validation;
 
 use App\Exceptions\Errors;
 use App\Exceptions\FormValidationException;
+use App\Exceptions\RepositoryValidationException;
 use App\Models\Task;
 
 class TasksValidation
@@ -40,7 +41,7 @@ class TasksValidation
             $this->errors->add('id', "No tasks for id found");
         }
         if (count($this->errors->all()) > 0) {
-            throw new FormValidationException();
+            throw new RepositoryValidationException();
         }
     }
 }

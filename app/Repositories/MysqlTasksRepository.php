@@ -42,11 +42,20 @@ class MysqlTasksRepository implements TasksRepositoryInterface
         return $taskCollection;
     }
 
-    public function addOne(Task $task): void
+    public function save(Task $task): void
     {
-        /** @var Task $task */
-        $sql = "INSERT INTO tasks (title, createdAt) 
+        if($task->id() !== null)
+        {
+            $sql = "UPDATE tasks SET title='{$task->title()}' WHERE id='{$task->id()}'";
+        }
+        else
+        {
+            /** @var Task $task */
+            $sql = "INSERT INTO tasks (title, createdAt) 
         VALUES ('{$task->title()}', '{$task->createdAt()}')";
+        }
+
+
         $this->pdo->exec($sql);
 
     }

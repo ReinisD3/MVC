@@ -24,7 +24,7 @@ class TasksValidation
     /**
      * @throws FormValidationException
      */
-    public function validateAdd(array $data): void
+    public function validateSave(array $data): void
     {
         if ($data['title'] == '') {
             $this->errors->add('taskTitle', 'Add title name here');

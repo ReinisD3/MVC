@@ -2,24 +2,25 @@
 
 namespace app\Controllers;
 
-use App\Models\Redirect;
-use App\Models\View;
+use App\Auth;
+use App\Redirect;
+use App\View;
 use FastRoute;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
-use App\Controllers\BaseController;
 
-class Router extends BaseController
+
+class Router
 {
     private FastRoute\Dispatcher $dispatcher;
     private Environment $twig;
 
     public function __construct()
     {
-        parent::__construct();
+
         $loader = new FilesystemLoader('app/Views');
         $this->twig = new Environment($loader);
         $this->twig->addGlobal('session', $_SESSION);
@@ -30,13 +31,17 @@ class Router extends BaseController
 
             $r->addRoute('GET', '/users/index', 'UsersController@index');
             $r->addRoute('GET', '/users/logout', 'UsersController@logout');
+            $r->addRoute('GET', '/users/editUser', 'UsersController@edit');
+            $r->addRoute('POST', '/users/editUser', 'UsersController@editSave');
             $r->addRoute('GET', '/users/login', 'UsersController@login');
             $r->addRoute('GET', '/users/register', 'UsersController@register');
-            $r->addRoute('POST', '/users/register', 'UsersController@registerExecute');
+            $r->addRoute('POST', '/users/register', 'UsersController@registerSave');
 
             $r->addRoute('GET', '/tasks', 'TasksController@index');
             $r->addRoute('POST', '/tasks', 'TasksController@add');
             $r->addRoute('GET', '/tasks/search', 'TasksController@search');
+            $r->addRoute('GET', '/tasks/search/edit', 'TasksController@edit');
+            $r->addRoute('POST', '/tasks/search/edit', 'TasksController@editSave');
             $r->addRoute('POST', '/tasks/search/delete', 'TasksController@delete');
 
         });
@@ -75,7 +80,7 @@ class Router extends BaseController
 
                 if ($process instanceof View) {
                     echo $this->twig->render($process->getFileName(), [
-                        'userName' => $this->getUserName($_SESSION['id']),
+                        'userName' => Auth::user($_SESSION['id']),
                         $process->getDataName() => $process->getData()
                     ]);
                 }

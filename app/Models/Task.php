@@ -35,4 +35,9 @@ class Task
         return [$task->id(),$task->title(),$task->createdAt()];
     }
 
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
 }

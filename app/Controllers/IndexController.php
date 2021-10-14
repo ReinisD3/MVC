@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\View;
+use App\View;
 
 class IndexController
 {

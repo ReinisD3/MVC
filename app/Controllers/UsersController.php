@@ -4,8 +4,8 @@ namespace app\Controllers;
 
 use App\Exceptions\FormValidationException;
 use App\Exceptions\RepositoryValidationException;
-use App\Models\Redirect;
-use App\Models\View;
+use App\Redirect;
+use App\View;
 use App\Repositories\MysqlUsersRepository;
 use App\Repositories\UsersRepositoryInterface;
 use App\Models\User;
@@ -61,7 +61,7 @@ class UsersController
         return new View('Users\register.twig');
     }
 
-    public function registerExecute(): Redirect
+    public function registerSave(): Redirect
     {
         try {
             $this->validator->validateRegister($_POST);
@@ -79,5 +79,15 @@ class UsersController
             return new Redirect('/users/register');
         }
 
+    }
+    public function edit():View
+    {
+        return new View('Users/edit.twig');
+    }
+    public function editSave():Redirect
+    {
+        var_dump($_POST);
+        echo'Esmu te';die;
+        return new Redirect('/');
     }
 }

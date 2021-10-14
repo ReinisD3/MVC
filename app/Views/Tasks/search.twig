@@ -29,6 +29,10 @@
             <input type="hidden" name="id" value="{{ task.id }}">
             <input type="submit" value="delete" name="delete" class="btn btn-dark"/>
         </form>
+        <form method="" action="search/edit">
+            <input type="hidden" name="id" value="{{ task.id }}">
+            <input type="submit" value="Edit" name="Edit" class="btn btn-success"/>
+        </form>
 
     </div>
 {% endblock %}

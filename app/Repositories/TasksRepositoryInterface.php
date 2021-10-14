@@ -10,7 +10,7 @@ interface TasksRepositoryInterface
 
     public function getRecords():?TaskCollection;
 
-    public function addOne(Task $task): void;
+    public function save(Task $task): void;
 
     public function searchById(string $id): ?Task;
 
